@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+	<style>
+		body{margin: 0; padding: 0;}
+	.box{
+		background-image: url(шар.png);
+		width: 100px;
+		height: 100px;
+		background-size: 100% 100%;
+		position: absolute;
+	}
+	.bg{
+		background-image: url(bg.jpg);
+		width: 1470px;
+		height: 720px;
+		background-size: 100% 100%;
+	}
+	</style>
+</head>
+<body>
+	<div class="bg">
+		<h1 style="color: white;">Score: <span class="scr"></span></h1>
+		<button class="btn">Начать</button>
+	</div>
+	<script>
+		let btn = document.querySelector(".btn");
+		let int1;
+		let scr = document.querySelector(".scr");
+		btn.onclick = function(){
+			int1=setInterval(create, 500);
+			setTimeout(end, 9000);
+			score = 0;
+			scr.innerHTML = score;
+		}
+		function getRandom(arg){
+			a = Math.random() * arg;
+			b = Math.round(a);
+			return b;
+		}
+		function end(){
+			clearInterval(int1);
+			alert("конец");
+		}
+
+		let y=[200,400,600];
+		let img=["watermelon.png", "pomegranate.png", "bomb.png"]
+		let score = 0;
+		scr.innerHTML = score;
+
+		function create(){
+			let elem = document.createElement('div');
+			document.body.appendChild(elem);
+			elem.classList.add("box");
+			elem.style.left = getRandom(1388) + "px";
+			elem.style.top = y[getRandom(2)] + "px";
+			let randimg = getRandom(2); 
+			elem.style.backgroundImage = "url(" + img[randimg] + ")";
+			setTimeout(disappear, 1000);
+			if (randimg==0){
+				elem.type = "norm";
+			}else if(randimg==1){
+				elem.type = "good";
+			}else if(randimg==2){
+				elem.type = "bad";
+			}
+			elem.onclick = function(){
+				elem.style.display = "none";
+				if (elem.type == "norm"){
+					score = score + 100;
+					scr.innerHTML = score;
+				}
+				if (elem.type == "good"){
+					score = score + 200;
+					scr.innerHTML = score;
+				}
+				if (elem.type == "bad"){
+					alert("Короче, ты не должен был сюда тыкать и типа проигрыш");
+					score = 0;
+					scr.innerHTML = score;
+				}
+			}
+			setTimeout(disappear, 1500);
+			function disappear(){
+				elem.style.display = "none";
+			}
+		}
+	</script>
+</body>
+</html>
